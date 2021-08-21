@@ -1,0 +1,19 @@
+plugins {
+    id 'org.jetbrains.kotlin.jvm' version '1.5.21'
+}
+
+group 'org.example'
+version '1.0-SNAPSHOT'
+
+repositories {
+    mavenCentral()
+    maven { url "https://jitpack.io" }
+}
+
+dependencies {
+    implementation 'io.github.cdimascio:dotenv-kotlin:6.2.2'
+    implementation "org.jetbrains.kotlin:kotlin-stdlib"
+    implementation 'io.github.kotlin-telegram-bot.kotlin-telegram-bot:telegram:6.0.5'
+    compile group: 'com.github.kittinunf.fuel', name: 'fuel', version: '2.2.3'
+    compile group: 'com.github.kittinunf.fuel', name: 'fuel-jackson', version: '2.2.3'
+}
