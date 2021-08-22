@@ -1,14 +1,14 @@
+package com.lesbass.telegram
+
 import com.github.kittinunf.fuel.httpGet
 import com.github.kotlintelegrambot.bot
 import com.github.kotlintelegrambot.dispatch
 import com.github.kotlintelegrambot.dispatcher.command
 import com.github.kotlintelegrambot.entities.ChatId
-import io.github.cdimascio.dotenv.dotenv
+import com.natpryce.konfig.*
 
-val dotenv = dotenv()
-
-private fun getLog(): String {
-    val (request, response, result) = dotenv["LOG_URL"]
+private fun getLog(logUrl: String): String {
+    val (_, _, result) = logUrl
         .httpGet()
         .responseString()
 
@@ -19,8 +19,8 @@ private fun getLog(): String {
     }
 }
 
-private fun getLastTest(): String {
-    val data = getLog()
+private fun getLastTest(logUrl: String): String {
+    val data = getLog(logUrl)
     return if (data === "Errore") {
         data
     } else {
@@ -29,11 +29,15 @@ private fun getLastTest(): String {
 }
 
 fun main() {
+    val config = EnvironmentVariables() overriding
+            ConfigurationProperties.fromResource("defaults.properties")
+    val apiKey = config[Key("API_KEY", stringType)]
+    val logUrl = config[Key("LOG_URL", stringType)]
     val bot = bot {
-        token = dotenv["API_KEY"]
+        token = apiKey
         dispatch {
             command("last_test") {
-                bot.sendMessage(chatId = ChatId.fromId(message.chat.id), text = getLastTest())
+                bot.sendMessage(chatId = ChatId.fromId(message.chat.id), text = getLastTest(logUrl))
             }
         }
     }
