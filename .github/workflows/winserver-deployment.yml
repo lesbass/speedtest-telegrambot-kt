@@ -1,15 +1,14 @@
 name: Deployment to Winserver Docker
 on: [push]
 jobs:
-  Build:
+  Deploy-to-docker:
     runs-on: self-hosted
     steps:
       - name: Check out repository code
         uses: actions/checkout@v2
+      - name: Build
       - run: docker build -t speedtest-telegrambot .
-  Deploy:
-    runs-on: self-hosted
-    steps:
+      - name: Deploy
       - run: docker rm --force speedtest-telegrambot
       - run: docker run --name speedtest-telegrambot -e LOG_URL="%LOG_URL%" -e API_KEY="%API_KEY%" --restart unless-stopped -d speedtest-telegrambot
       - run: docker rmi $(docker images -f "dangling=true" -q)
