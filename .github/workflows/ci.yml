@@ -14,7 +14,6 @@ jobs:
     steps:
       - name: Check out repository code
         uses: actions/checkout@v2
-      - run: echo "${{ secrets.LOG_URL }}"
       - name: Build
         run: docker build -t speedtest-telegrambot .
       - name: Stop old instance
