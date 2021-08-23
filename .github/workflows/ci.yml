@@ -1,5 +1,13 @@
-name: Deployment to Winserver Docker
-on: [push]
+---
+name: ci
+
+on:
+  push:
+    branches:
+      - '**'
+    tags:
+      - "*.*.*"
+
 jobs:
   Deploy-to-docker:
     runs-on: self-hosted
@@ -11,6 +19,6 @@ jobs:
       - name: Stop old instance
         run: docker rm --force speedtest-telegrambot
       - name: Deploy
-        run: docker run --name speedtest-telegrambot -e LOG_URL="%LOG_URL%" -e API_KEY="%API_KEY%" --restart unless-stopped -d speedtest-telegrambot
+        run: docker run --name speedtest-telegrambot -e LOG_URL="${{ ci.LOG_URL }}" -e API_KEY="${{ ci.API_KEY }}" --restart unless-stopped -d speedtest-telegrambot
       - name: Clean up
         run: docker rmi $(docker images -f "dangling=true" -q)
