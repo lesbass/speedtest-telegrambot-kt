@@ -2,13 +2,13 @@ stages:
   - build
   - deploy
 
-build-job:       # This job runs in the build stage, which runs first.
+build-job:
   stage: build
   script:
-    - docker build -t speedtest-telegrambot --build-arg API_KEY="$API_KEY" --build-arg LOG_URL="$LOG_URL" .
+    - docker build -t speedtest-telegrambot .
 
-deploy-job:      # This job runs in the deploy stage.
-  stage: deploy  # It only runs when *both* jobs in the test stage complete successfully.
+deploy-job:
+  stage: deploy
   script:
     - docker rm --force speedtest-telegrambot
-    - docker run --name speedtest-telegrambot --restart unless-stopped -d speedtest-telegrambot
+    - docker run  --env API_KEY="$API_KEY" --env LOG_URL="$LOG_URL" --name speedtest-telegrambot --restart unless-stopped -d speedtest-telegrambot
