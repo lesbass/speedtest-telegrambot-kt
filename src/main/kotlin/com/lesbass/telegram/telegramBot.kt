@@ -57,6 +57,12 @@ fun main() {
                 bot.sendMessage(chatId = ChatId.fromId(message.chat.id), text = getLastTest(logUrl))
             }
         }
+        dispatch {
+            command("ciao") {
+                val text = """Ciao ${message.from?.firstName}!"""
+                bot.sendMessage(chatId = ChatId.fromId(message.chat.id), text = text)
+            }
+        }
     }
     println("Polling...")
     bot.startPolling()
