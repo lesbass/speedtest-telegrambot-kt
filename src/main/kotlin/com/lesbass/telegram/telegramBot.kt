@@ -4,6 +4,7 @@ import com.github.kittinunf.fuel.httpGet
 import com.github.kotlintelegrambot.bot
 import com.github.kotlintelegrambot.dispatch
 import com.github.kotlintelegrambot.dispatcher.command
+import com.github.kotlintelegrambot.dispatcher.text
 import com.github.kotlintelegrambot.entities.ChatId
 import com.natpryce.konfig.*
 
@@ -43,24 +44,34 @@ fun main() {
             }
         }"
     )
-    println("logUrl: ${
-        if (logUrl.isNotEmpty()) {
-            "✔"
-        } else {
-            "❌"
-        }
-    }")
+    println(
+        "logUrl: ${
+            if (logUrl.isNotEmpty()) {
+                "✔"
+            } else {
+                "❌"
+            }
+        }"
+    )
     val bot = bot {
         token = apiKey
         dispatch {
-            command("last_test") {
-                bot.sendMessage(chatId = ChatId.fromId(message.chat.id), text = getLastTest(logUrl))
-            }
-        }
-        dispatch {
-            command("ciao") {
-                val text = """Ciao ${message.from?.firstName}!"""
-                bot.sendMessage(chatId = ChatId.fromId(message.chat.id), text = text)
+            text {
+                bot.sendMessage(chatId = ChatId.fromId(message.chat.id), text =
+                when(message.text){
+                    "/last_test" -> {
+                        println("last_test command requested")
+                        getLastTest(logUrl)
+                    }
+                    "/ciao" -> {
+                        println("ciao command requested")
+                        """Ciao ${message.from?.firstName}!"""
+                    }
+                    else -> {
+                        println("free text " + message.text)
+                        """Sorry, ${message.from?.firstName}, I still don't know this command!"""
+                    }
+                })
             }
         }
     }
