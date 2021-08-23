@@ -34,8 +34,22 @@ fun main() {
     val apiKey = config[Key("API_KEY", stringType)]
     val logUrl = config[Key("LOG_URL", stringType)]
     println("Telegram Bot started! ")
-    println("apiKey: $apiKey")
-    println("logUrl: $logUrl")
+    println(
+        "apiKey: ${
+            if (apiKey.isEmpty()) {
+                "✔"
+            } else {
+                "❌"
+            }
+        }"
+    )
+    println("logUrl: ${
+        if (logUrl.isEmpty()) {
+            "✔"
+        } else {
+            "❌"
+        }
+    }")
     val bot = bot {
         token = apiKey
         dispatch {
