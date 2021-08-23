@@ -1,0 +1,24 @@
+---
+name: ci
+
+on:
+  push:
+    branches:
+      - '**'
+    tags:
+      - "*.*.*"
+
+jobs:
+  Deploy-to-docker:
+    runs-on: self-hosted
+    steps:
+      - name: Check out repository code
+        uses: actions/checkout@v2
+      - name: Build
+        run: docker build -t speedtest-telegrambot .
+      - name: Stop old instance
+        run: docker rm --force speedtest-telegrambot
+      - name: Deploy
+        run: docker run --name speedtest-telegrambot -e LOG_URL="${{ secrets.LOG_URL }}" -e API_KEY="${{ secrets.API_KEY }}" --restart unless-stopped -d speedtest-telegrambot
+      - name: Clean up
+        run: docker rmi $(docker images -f "dangling=true" -q)
