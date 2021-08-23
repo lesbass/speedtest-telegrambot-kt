@@ -33,6 +33,9 @@ fun main() {
             ConfigurationProperties.fromResource("defaults.properties")
     val apiKey = config[Key("API_KEY", stringType)]
     val logUrl = config[Key("LOG_URL", stringType)]
+    println("Telegram Bot started! ")
+    println("apiKey: $apiKey")
+    println("logUrl: $logUrl")
     val bot = bot {
         token = apiKey
         dispatch {
@@ -41,5 +44,6 @@ fun main() {
             }
         }
     }
+    println("Polling...")
     bot.startPolling()
 }

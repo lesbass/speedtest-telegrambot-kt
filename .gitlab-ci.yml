@@ -11,4 +11,4 @@ deploy-job:
   stage: deploy
   script:
     - docker rm --force speedtest-telegrambot
-    - docker run  --env API_KEY="$API_KEY" --env LOG_URL="$LOG_URL" --name speedtest-telegrambot --restart unless-stopped -d speedtest-telegrambot
+    - docker run --name speedtest-telegrambot --restart unless-stopped -d speedtest-telegrambot
