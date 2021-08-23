@@ -36,7 +36,7 @@ fun main() {
     println("Telegram Bot started! ")
     println(
         "apiKey: ${
-            if (apiKey.isEmpty()) {
+            if (!apiKey.isEmpty()) {
                 "✔"
             } else {
                 "❌"
@@ -44,7 +44,7 @@ fun main() {
         }"
     )
     println("logUrl: ${
-        if (logUrl.isEmpty()) {
+        if (!logUrl.isEmpty()) {
             "✔"
         } else {
             "❌"
